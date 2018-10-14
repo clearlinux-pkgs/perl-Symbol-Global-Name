@@ -4,15 +4,14 @@
 #
 Name     : perl-Symbol-Global-Name
 Version  : 0.05
-Release  : 1
+Release  : 2
 URL      : https://cpan.metacpan.org/authors/id/A/AL/ALEXMV/Symbol-Global-Name-0.05.tar.gz
 Source0  : https://cpan.metacpan.org/authors/id/A/AL/ALEXMV/Symbol-Global-Name-0.05.tar.gz
 Source1  : http://http.debian.net/debian/pool/main/libs/libsymbol-global-name-perl/libsymbol-global-name-perl_0.05-1.debian.tar.xz
 Summary  : 'finds name and type of a global variable'
 Group    : Development/Tools
 License  : Artistic-1.0-Perl
-Requires: perl-Symbol-Global-Name-man
-Requires: perl(Module::Install)
+BuildRequires : buildreq-cpan
 BuildRequires : perl(Module::Install)
 
 %description
@@ -22,19 +21,20 @@ SYNOPSIS
 package My;
 our $VERSION = '0.1';
 
-%package man
-Summary: man components for the perl-Symbol-Global-Name package.
-Group: Default
+%package dev
+Summary: dev components for the perl-Symbol-Global-Name package.
+Group: Development
+Provides: perl-Symbol-Global-Name-devel = %{version}-%{release}
 
-%description man
-man components for the perl-Symbol-Global-Name package.
+%description dev
+dev components for the perl-Symbol-Global-Name package.
 
 
 %prep
-tar -xf %{SOURCE1}
-cd ..
 %setup -q -n Symbol-Global-Name-0.05
-mkdir -p %{_topdir}/BUILD/Symbol-Global-Name-0.05/deblicense/
+cd ..
+%setup -q -T -D -n Symbol-Global-Name-0.05 -b 1
+mkdir -p deblicense/
 mv %{_topdir}/BUILD/debian/* %{_topdir}/BUILD/Symbol-Global-Name-0.05/deblicense/
 
 %build
@@ -60,9 +60,9 @@ make TEST_VERBOSE=1 test
 %install
 rm -rf %{buildroot}
 if test -f Makefile.PL; then
-make pure_install PERL_INSTALL_ROOT=%{buildroot}
+make pure_install PERL_INSTALL_ROOT=%{buildroot} INSTALLDIRS=vendor
 else
-./Build install --installdirs=site --destdir=%{buildroot}
+./Build install --installdirs=vendor --destdir=%{buildroot}
 fi
 find %{buildroot} -type f -name .packlist -exec rm -f {} ';'
 find %{buildroot} -depth -type d -exec rmdir {} 2>/dev/null ';'
@@ -71,8 +71,8 @@ find %{buildroot} -type f -name '*.bs' -empty -exec rm -f {} ';'
 
 %files
 %defattr(-,root,root,-)
-/usr/lib/perl5/site_perl/5.26.1/Symbol/Global/Name.pm
+/usr/lib/perl5/vendor_perl/5.26.1/Symbol/Global/Name.pm
 
-%files man
+%files dev
 %defattr(-,root,root,-)
 /usr/share/man/man3/Symbol::Global::Name.3
