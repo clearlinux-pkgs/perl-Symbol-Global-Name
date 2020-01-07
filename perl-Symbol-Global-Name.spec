@@ -4,13 +4,15 @@
 #
 Name     : perl-Symbol-Global-Name
 Version  : 0.05
-Release  : 10
+Release  : 11
 URL      : https://cpan.metacpan.org/authors/id/A/AL/ALEXMV/Symbol-Global-Name-0.05.tar.gz
 Source0  : https://cpan.metacpan.org/authors/id/A/AL/ALEXMV/Symbol-Global-Name-0.05.tar.gz
 Source1  : http://http.debian.net/debian/pool/main/libs/libsymbol-global-name-perl/libsymbol-global-name-perl_0.05-1.debian.tar.xz
 Summary  : 'finds name and type of a global variable'
 Group    : Development/Tools
-License  : Artistic-1.0-Perl
+License  : Artistic-1.0 Artistic-1.0-Perl GPL-1.0
+Requires: perl-Symbol-Global-Name-license = %{version}-%{release}
+Requires: perl-Symbol-Global-Name-perl = %{version}-%{release}
 BuildRequires : buildreq-cpan
 BuildRequires : perl(Module::Install)
 
@@ -25,23 +27,42 @@ our $VERSION = '0.1';
 Summary: dev components for the perl-Symbol-Global-Name package.
 Group: Development
 Provides: perl-Symbol-Global-Name-devel = %{version}-%{release}
+Requires: perl-Symbol-Global-Name = %{version}-%{release}
 
 %description dev
 dev components for the perl-Symbol-Global-Name package.
 
 
+%package license
+Summary: license components for the perl-Symbol-Global-Name package.
+Group: Default
+
+%description license
+license components for the perl-Symbol-Global-Name package.
+
+
+%package perl
+Summary: perl components for the perl-Symbol-Global-Name package.
+Group: Default
+Requires: perl-Symbol-Global-Name = %{version}-%{release}
+
+%description perl
+perl components for the perl-Symbol-Global-Name package.
+
+
 %prep
 %setup -q -n Symbol-Global-Name-0.05
-cd ..
-%setup -q -T -D -n Symbol-Global-Name-0.05 -b 1
+cd %{_builddir}
+tar xf %{_sourcedir}/libsymbol-global-name-perl_0.05-1.debian.tar.xz
+cd %{_builddir}/Symbol-Global-Name-0.05
 mkdir -p deblicense/
-mv %{_topdir}/BUILD/debian/* %{_topdir}/BUILD/Symbol-Global-Name-0.05/deblicense/
+cp -r %{_builddir}/debian/* %{_builddir}/Symbol-Global-Name-0.05/deblicense/
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-export LANG=C
+export LANG=C.UTF-8
 if test -f Makefile.PL; then
 %{__perl} Makefile.PL
 make  %{?_smp_mflags}
@@ -51,7 +72,7 @@ else
 fi
 
 %check
-export LANG=C
+export LANG=C.UTF-8
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
@@ -59,6 +80,8 @@ make TEST_VERBOSE=1 test
 
 %install
 rm -rf %{buildroot}
+mkdir -p %{buildroot}/usr/share/package-licenses/perl-Symbol-Global-Name
+cp %{_builddir}/Symbol-Global-Name-0.05/deblicense/copyright %{buildroot}/usr/share/package-licenses/perl-Symbol-Global-Name/16fad79880028cfbe7e5e423f8c18a87fa7c04c8
 if test -f Makefile.PL; then
 make pure_install PERL_INSTALL_ROOT=%{buildroot} INSTALLDIRS=vendor
 else
@@ -71,8 +94,15 @@ find %{buildroot} -type f -name '*.bs' -empty -exec rm -f {} ';'
 
 %files
 %defattr(-,root,root,-)
-/usr/lib/perl5/vendor_perl/5.28.2/Symbol/Global/Name.pm
 
 %files dev
 %defattr(-,root,root,-)
 /usr/share/man/man3/Symbol::Global::Name.3
+
+%files license
+%defattr(0644,root,root,0755)
+/usr/share/package-licenses/perl-Symbol-Global-Name/16fad79880028cfbe7e5e423f8c18a87fa7c04c8
+
+%files perl
+%defattr(-,root,root,-)
+/usr/lib/perl5/vendor_perl/5.30.1/Symbol/Global/Name.pm
