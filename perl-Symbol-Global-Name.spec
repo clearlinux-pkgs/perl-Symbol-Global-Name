@@ -4,7 +4,7 @@
 #
 Name     : perl-Symbol-Global-Name
 Version  : 0.05
-Release  : 11
+Release  : 12
 URL      : https://cpan.metacpan.org/authors/id/A/AL/ALEXMV/Symbol-Global-Name-0.05.tar.gz
 Source0  : https://cpan.metacpan.org/authors/id/A/AL/ALEXMV/Symbol-Global-Name-0.05.tar.gz
 Source1  : http://http.debian.net/debian/pool/main/libs/libsymbol-global-name-perl/libsymbol-global-name-perl_0.05-1.debian.tar.xz
@@ -81,7 +81,7 @@ make TEST_VERBOSE=1 test
 %install
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/perl-Symbol-Global-Name
-cp %{_builddir}/Symbol-Global-Name-0.05/deblicense/copyright %{buildroot}/usr/share/package-licenses/perl-Symbol-Global-Name/16fad79880028cfbe7e5e423f8c18a87fa7c04c8
+cp %{_builddir}/debian/copyright %{buildroot}/usr/share/package-licenses/perl-Symbol-Global-Name/16fad79880028cfbe7e5e423f8c18a87fa7c04c8
 if test -f Makefile.PL; then
 make pure_install PERL_INSTALL_ROOT=%{buildroot} INSTALLDIRS=vendor
 else
@@ -105,4 +105,4 @@ find %{buildroot} -type f -name '*.bs' -empty -exec rm -f {} ';'
 
 %files perl
 %defattr(-,root,root,-)
-/usr/lib/perl5/vendor_perl/5.30.1/Symbol/Global/Name.pm
+/usr/lib/perl5/vendor_perl/5.30.2/Symbol/Global/Name.pm
