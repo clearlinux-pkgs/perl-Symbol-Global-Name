@@ -4,7 +4,7 @@
 #
 Name     : perl-Symbol-Global-Name
 Version  : 0.05
-Release  : 12
+Release  : 13
 URL      : https://cpan.metacpan.org/authors/id/A/AL/ALEXMV/Symbol-Global-Name-0.05.tar.gz
 Source0  : https://cpan.metacpan.org/authors/id/A/AL/ALEXMV/Symbol-Global-Name-0.05.tar.gz
 Source1  : http://http.debian.net/debian/pool/main/libs/libsymbol-global-name-perl/libsymbol-global-name-perl_0.05-1.debian.tar.xz
@@ -105,4 +105,4 @@ find %{buildroot} -type f -name '*.bs' -empty -exec rm -f {} ';'
 
 %files perl
 %defattr(-,root,root,-)
-/usr/lib/perl5/vendor_perl/5.30.2/Symbol/Global/Name.pm
+/usr/lib/perl5/vendor_perl/5.30.3/Symbol/Global/Name.pm
